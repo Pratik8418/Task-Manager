@@ -2,6 +2,7 @@ const express = require('express');
 const User = require('../model/user');
 const auth = require('../middleware/auth');
 const router = new express.Router();
+const multer = require('multer');
 
 // const app = express();
 // const PORT = process.env.PORT || 3000;
@@ -135,6 +136,23 @@ router.post('/user/login', async (req,res) => {
    }catch (e) {
       res.status(400).send(e);
    }
+})
+
+const upload = multer({
+  dest : 'avatars',
+  limits : {
+    fileSize : 1000000
+  },
+  fileFilter(req,file,cb){
+    if(!file.originalname.match(/\.(jpg|png|jpeg)$/)){
+          cb(new Error("File must be jpg or png or jprg"));
+    }
+    cb(undefined,true);
+  }
+})
+
+router.post('/user/myProfile/avatar', upload.single('avatar'), async (req,res) => {
+   res.send();
 })
 
 router.post('/user/logout', auth , async (req,res) => {
