@@ -1,14 +1,19 @@
 const express = require('express');
 const Task = require('../model/task');
 const router = new express.Router();
+const auth = require('../middleware/auth')
 
 // const app = express();
 // const PORT = process.env.PORT || 3000;
 // app.use(express.json());
 
 //Task CRUD
-router.post('/task', async (req, res) => {
-  const task = new Task(req.body);
+router.post('/task', auth , async (req, res) => {
+  //const task = new Task(req.body);
+  const task = new Task({
+    ...req.body,
+    "owner" : req.user._id
+  })
 
   try {
     await task.save();
