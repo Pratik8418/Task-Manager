@@ -27,7 +27,17 @@ router.get('/tasks', auth ,async (req,res) => {
   try{
      //const tasks = await Task.find({}); -- without middleware
     //  const tasks = await Task.find({"owner" : req.user._id}) -- use middleware or below method is also allowed
-    await req.user.populate('tasks').execPopulate()
+
+    const match = {} // match object for filtering using url key and value
+ 
+    if(req.query.status){
+      match.status = req.query.status === 'true'
+    }
+
+    await req.user.populate('tasks').execPopulate({
+      path : 'tasks',
+      match
+    })
      
     res.send(req.user.tasks); // for this populate method
   }catch(e){
