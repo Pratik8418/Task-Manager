@@ -3,6 +3,7 @@ const User = require('../model/user');
 const auth = require('../middleware/auth');
 const router = new express.Router();
 const multer = require('multer');
+const sharp = require('sharp')
 
 // const app = express();
 // const PORT = process.env.PORT || 3000;
@@ -139,20 +140,33 @@ router.post('/user/login', async (req,res) => {
 })
 
 const upload = multer({
-  dest : 'avatars',
   limits : {
     fileSize : 1000000
   },
   fileFilter(req,file,cb){
     if(!file.originalname.match(/\.(jpg|png|jpeg)$/)){
-          cb(new Error("File must be jpg or png or jprg"));
+      return cb(new Error("File must be jpg or png or jprg"));
     }
     cb(undefined,true);
   }
 })
 
-router.post('/user/myProfile/avatar', upload.single('avatar'), async (req,res) => {
+router.post('/user/myProfile/avatar',auth, upload.single('avatar'),async (req,res) => {
+  // const buffer = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer()
+  const buffer = await sharp({
+    create: {
+      width: 48,
+      height: 48,
+      channels: 4,
+      background: { r: 255, g: 0, b: 0, alpha: 0.5 }
+    }
+  }).png().toBuffer();
+
+  req.user.avatar = buffer
+  await req.user.save()
    res.send();
+}, (error,req,res,next) => {
+  res.status(400).send({ error : error.message});
 })
 
 router.post('/user/logout', auth , async (req,res) => {
