@@ -76,13 +76,14 @@ router.patch('/task/:id', auth , async (req,res) => {
   }
 })
 
-router.delete('/task/:id', async (req,res) => {
+router.delete('/task/:id', auth , async (req,res) => {
   try{
-   const task = await Task.findByIdAndDelete(req.params.id);
+   //const task = await Task.findByIdAndDelete(req.params.id);
+   const task = await Task.findOneAndDelete({_id : req.params.id, owner : req.user._id});
    if(!task){
     return res.status(400).send("Error Invalid Id");
    }
-
+   
    res.send(task);
   }catch(e){
     res.status(400).send(e);
