@@ -29,9 +29,15 @@ router.get('/tasks', auth ,async (req,res) => {
     //  const tasks = await Task.find({"owner" : req.user._id}) -- use middleware or below method is also allowed
 
     const match = {} // match object for filtering using url key and value
+    const sort = {} // sort object for sorting order
  
     if(req.query.status){
       match.status = req.query.status === 'true'
+    }
+
+    if(req.query.sortBy){
+      const parts = req.query.sortBy.split(':');
+      sort[parts[0]] = parts[1] === 'desc' ? -1 : 1;
     }
 
     await req.user.populate('tasks').execPopulate({
@@ -40,7 +46,8 @@ router.get('/tasks', auth ,async (req,res) => {
       options : {
         limit : parseInt(req.query.limit),
         skip : parseInt(req.query.skip)
-      }
+      },
+      sort
     })
      
     res.send(req.user.tasks); // for this populate method
