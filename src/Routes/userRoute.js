@@ -58,6 +58,28 @@ router.get('/users/:id', async (req, res) => {
   // })
 })
 
+router.patch('/user/myProfile', auth , async (req,res) => {
+  const updateKeys = Object.keys(req.body);
+  const documentsKeys = ["name", "email", "age","password"];
+  const isValidKey = updateKeys.every((key) => documentsKeys.includes(key));
+
+  if (!isValidKey) {
+    return res.status(400).send("Eroor : invalid key");
+  }
+
+  try {
+    //const user = await User.findById(req.params.id);
+
+    updateKeys.forEach( (update) => req.user[update] = req.body[update] )
+    await req.user.save();
+   
+    res.send(req.user);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+
+})
+
 router.patch('/users/:id', async (req, res) => {
   const updateKeys = Object.keys(req.body);
   const documentsKeys = ["name", "email", "age", "password"];
