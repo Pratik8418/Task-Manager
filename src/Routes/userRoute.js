@@ -85,15 +85,19 @@ router.patch('/users/:id', async (req, res) => {
 })
 
 
-router.delete('/users/:id', async (req, res) => {
+router.delete('/user/myProfile', auth , async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
 
-    if (!user) {
-      return res.status(400).send("Error invalid user");
-    }
+    // const user = await User.findByIdAndDelete(req.params.id); -- WITHOUT use of auth middleware
+    // const user = await User.findByIdAndDelete(req.user._id);   --with use of auth middleware
 
-    res.send(user);
+    // if (!user) {
+    //   return res.status(400).send("Error invalid user");
+    // }
+
+    await req.user.remove();  //same output as upper code
+
+    res.send(req.user);
   } catch (e) {
     res.status(400).send(e);
   }
