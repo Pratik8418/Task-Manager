@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const error = require('mongoose/lib/error');
 const { Number } = require('mongoose/lib/schema/index');
 
-//DeprecationWarning
+
 mongoose.set('useFindAndModify', false);
 
 const connectionUrl = 'mongodb://127.0.0.1:27017/task-manager-api';
