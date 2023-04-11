@@ -15,7 +15,7 @@ router.post('/mail/test', async (req,res) => {
     sendWelcome(req.email,req.name);
     res.send();
   }catch (e){
-  res.status(400).send(e);
+  res.status(400).send("Error");
   }
 
 })
