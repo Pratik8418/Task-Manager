@@ -4,21 +4,21 @@ const auth = require('../middleware/auth');
 const router = new express.Router();
 const multer = require('multer');
 const sharp = require('sharp')
-const sendWelcome = require('../mail/account');
+// const sendWelcome = require('../mail/account');
 
 // const app = express();
 // const PORT = process.env.PORT || 3000;
 // app.use(express.json());
 
-router.post('/mail/test', async (req,res) => {
-  try{
-    sendWelcome(req.email,req.name);
-    res.send();
-  }catch (e){
-  res.status(400).send("Error");
-  }
+// router.post('/mail/test', async (req,res) => {
+//   try{
+//     sendWelcome(req.email,req.name);
+//     res.send();
+//   }catch (e){
+//   res.status(400).send("Error");
+//   }
 
-})
+// })
 
 // User CRUD
 router.post('/users', async (req, res) => {
