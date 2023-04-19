@@ -4,21 +4,56 @@ const auth = require('../middleware/auth');
 const router = new express.Router();
 const multer = require('multer');
 const sharp = require('sharp')
-// const sendWelcome = require('../mail/account');
+// const { sendMailToUser } = require('../mail/account');
+const nodemailer = require("nodemailer");
 
 // const app = express();
 // const PORT = process.env.PORT || 3000;
 // app.use(express.json());
 
-// router.post('/mail/test', async (req,res) => {
-//   try{
-//     sendWelcome(req.email,req.name);
-//     res.send();
-//   }catch (e){
-//   res.status(400).send("Error");
-//   }
+router.post('/mail/test', async (req,res) => {
+  try{
+    console.log(req.body.email);
+    // sendMailToUser;
 
-// })
+    let testAccount = await nodemailer.createTestAccount();
+
+    // create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+      host: "smtp.ethereal.email",
+      port: 587,
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: 'johanna.feest@ethereal.email',
+        pass: 'PR61ndN3e7dueA5gvX'
+      },
+    });
+
+   
+    
+    var mailOptions = {
+      from: 'johanna.feest@ethereal.email', // sender address
+      to: `${req.body.email}`, // list of receivers
+      subject: 'Sending Email using Node.js',
+      text: 'That was easy!'
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+        res.send(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+        res.send('Email sent: ' + info.response)
+      }
+    });
+
+
+  }catch (e){
+  res.status(400).send("Error " +  e);
+  }
+
+})
 
 // User CRUD
 router.post('/users', async (req, res) => {
