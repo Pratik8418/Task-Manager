@@ -1,4 +1,4 @@
-const express = require('express');
+ const express = require('express');
 require('./db/mongoose')
 // const User = require('../src/model/user');
 // const Task = require('../src/model/task');
@@ -22,19 +22,6 @@ app.listen(PORT, (res, error) => {
   }
   console.log("Server listing on PORT ", PORT);
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Async and await
 // User.findByIdAndDelete('87439812jhfwiu983274').then(() => {

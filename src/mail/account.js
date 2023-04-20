@@ -1,6 +1,5 @@
 const nodemailer = require("nodemailer");
 
-
 const sendMailToUser = async () => {
 
   // Generate test SMTP service account from ethereal.email
@@ -43,7 +42,6 @@ nodemailer.createTransport({
         console.log('Email sent successfully');
     }
 });
-
 }
 
 //sendWelcome().catch(console.error);
