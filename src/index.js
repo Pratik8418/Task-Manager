@@ -1,4 +1,4 @@
- const express = require('express');
+const express = require('express');
 require('./db/mongoose')
 // const User = require('../src/model/user');
 // const Task = require('../src/model/task');
@@ -39,5 +39,4 @@ app.listen(PORT, (res, error) => {
 // deleteByIdAndDelete("_id").then( (count) => {
 //     console.log(count);
 // }).catch( () => {
-
 // })
